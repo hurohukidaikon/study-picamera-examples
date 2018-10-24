@@ -12,8 +12,8 @@ import requests
 
 try:
     SLACK_URL = os.environ['SLACK_URL']
-    SKACK_TOKEN = os.environ['SLACK_TOKEN']
-    SKACK_CHANNEL = os.environ['SKACK_CHANNEL']
+    SLACK_TOKEN = os.environ['SLACK_TOKEN']
+    SLACK_CHANNEL = os.environ['SLACK_CHANNEL']
 except KeyError as e:
     sys.exit('Couldn\'t find env: {}'.format(e))
 
@@ -23,18 +23,18 @@ net = cv2.dnn.readNetFromCaffe('/home/pi/models/MobileNetSSD_deploy.prototxt',
 
 
 def upload():
-image = { 'file': open('hello.jpg', 'rb') }
-payload = {
-    'filename': 'hello.jpg',
-    'token': SLACK_TOKEN,
-    'channels': [SLACK_CHANNEL],
-}
-requests.post(SLACK_URL, params=payload, files=image)
+    image = { 'file': open('hello.jpg', 'rb') }
+    payload = {
+        'filename': 'hello.jpg',
+        'token': SLACK_TOKEN,
+        'channels': [SLACK_CHANNEL],
+    }
+    requests.post(SLACK_URL, params=payload, files=image)
 
 
 class PersonDetector(object):
     def __init__(self, flip = True):
-        self.last_upload = time.time()
+        self.last_upload = time.time() # この行を新しく追加
         self.vs = PiVideoStream(resolution=(800, 608)).start()
         self.flip = flip
         time.sleep(2.0)
